@@ -66,21 +66,3 @@ EOF
 done
 
 echo "10Gbps network interfaces renaming and persistence setup complete."
-
-#东八区时钟
-timedatectl set-timezone Asia/Shanghai
-
-#关闭防火墙的命令与NetworkManager
-systemctl  disable  firewalld
-systemctl  stop  firewalld
-systemctl disable NetworkManager
-systemctl stop NetworkManager
-
-#关闭selinux的命令
-sed  -i  '7s/SELINUX=enforcing/SELINUX=disabled/g'  /etc/selinux/config
-
-#更改SSHD端口
-sed -i '17a Port 7346' /etc/ssh/sshd_config
-sed -i 's/GSSAPIAuthentication yes/#GSSAPIAuthentication no/g' /etc/ssh/sshd_config
-sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
-systemctl enable sshd
